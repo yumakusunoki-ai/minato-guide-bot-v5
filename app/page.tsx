@@ -1,14 +1,10 @@
-
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([
-    { role: 'ai', content: 'こんにちは！港区の観光地をご案内します。気になるエリアや目的を教えてください。' },
+    { role: 'ai', content: 'こんにちは！港区でおすすめの観光スポットをご案内します。気になるエリアや目的を教えてください。' },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -36,24 +32,35 @@ export default function ChatPage() {
     <div className="max-w-2xl mx-auto p-4 space-y-4">
       <div className="space-y-2">
         {messages.map((m, i) => (
-          <Card key={i} className={m.role === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-white'}>
-            <CardContent className="p-3 text-sm whitespace-pre-line">{m.content}</CardContent>
-          </Card>
+          <div
+            key={i}
+            className={`rounded-xl p-3 text-sm whitespace-pre-line shadow ${
+              m.role === 'user' ? 'ml-auto bg-blue-100 text-right' : 'mr-auto bg-white text-left'
+            }`}
+          >
+            {m.content}
+          </div>
         ))}
         {loading && (
-          <Card className="mr-auto bg-white">
-            <CardContent className="p-3 text-sm">回答を生成中...</CardContent>
-          </Card>
+          <div className="rounded-xl p-3 text-sm bg-white shadow mr-auto">回答を生成中...</div>
         )}
       </div>
       <div className="flex items-center space-x-2">
-        <Input
+        <input
+          type="text"
           placeholder="例: 六本木でデートにおすすめは？"
+          className="flex-1 px-3 py-2 border rounded"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
-        <Button onClick={sendMessage} disabled={loading}>送信</Button>
+        <button
+          onClick={sendMessage}
+          disabled={loading}
+          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+        >
+          送信
+        </button>
       </div>
     </div>
   );
